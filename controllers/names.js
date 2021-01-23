@@ -6,11 +6,11 @@ const fs = require("fs");
 // @access  Public
 exports.getAllNames = async (req, res, next) => {
     try {
-        // TODO: change to fs.readfile
-        const response = await fetch("../names.json");
-        const names = await response.json();
-        console.log(names);
-        return res.status(200).json(names);
+        fs.readFile("./names.json", (err, data) => {
+            if (err) throw err;
+            const names = JSON.parse(data);
+            return res.status(200).json(names);
+        });
     } catch (err) {
         console.log(err);
         const error = new Error(err);
