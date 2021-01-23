@@ -1,17 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 require("dotenv").config({ path: "./config/.env" });
 
 const nameRoutes = require("./routes/names");
 
 const app = express();
+const port = process.env.PORT || 8000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Routes
-app.use("/names", nameRoutes);
+//app.use(express(path.join(__dirname, "client/build")));
+
+app.use("/api/names", nameRoutes);
+
+/* app.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "client/public/index.html"));
+}); */
 
 // Error handling
 app.use((req, res, next) => {
@@ -26,8 +34,6 @@ app.use((error, req, res) => {
         error: error.message,
     });
 });
-
-const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);

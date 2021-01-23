@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "cd client && npm run start"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7"
   }
 }

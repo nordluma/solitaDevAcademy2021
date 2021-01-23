@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const fs = require("fs");
 
 // @desc    Get all names
-// @route   GET /names
+// @route   GET /api/names
 // @access  Public
 exports.getAllNames = async (req, res, next) => {
     try {
