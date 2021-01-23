@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 
 function Names() {
     const [names, setNames] = useState([]);
+    const [sort, setSort] = useState(false);
 
     useEffect(() => {
         const getNames = async () => {
             const namesFromServer = await fetchNames();
+
             setNames(namesFromServer.names);
         };
 
@@ -19,25 +21,52 @@ function Names() {
         return data;
     };
 
-    // List names and amounts
-
     // Sort by popularity
+    const sortByPopularity = names.sort(
+        (a, b) => Number(b.amount) - Number(a.amount)
+    );
+
+    const sortedByPopularity = sortByPopularity.map((name, index) => (
+        <div className="name" key={index}>
+            <p>{name.name}</p>
+            <p>{name.amount}</p>
+        </div>
+    ));
 
     // Sort in alphabetical order
+    const sortByAlphabet = names.sort((a, b) =>
+        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+    );
+
+    const sortedByAlphabet = sortByAlphabet.map((name, index) => (
+        <div className="name" key={index}>
+            <p>{name.name}</p>
+            <p>{name.amount}</p>
+        </div>
+    ));
+
+    // Handle Sort
+    const handleSort = () => {
+        !sort ? setSort(true) : setSort(false);
+    };
 
     // Total amount of all the names
 
     return (
-        <div>
+        <div className="name-list">
             <h2>Popular Names</h2>
-            <button>Sort by Alphabet</button>
+            <button className="btn" onClick={handleSort}>
+                {sort ? "Sort By Popularity" : "Sort by Alphabet"}
+            </button>
 
-            {names.map((name, index) => (
-                <div key={index}>
+            {sort ? sortedByAlphabet : sortedByPopularity}
+
+            {/* {names.map((name, index) => (
+                <div className="name" key={index}>
                     <p>{name.name}</p>
                     <p>{name.amount}</p>
                 </div>
-            ))}
+            ))} */}
         </div>
     );
 }
