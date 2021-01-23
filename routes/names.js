@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const getAllNames = require("../controllers/names");
+const { getAllNames } = require("../controllers/names");
 
 router.get("/", getAllNames);
 
