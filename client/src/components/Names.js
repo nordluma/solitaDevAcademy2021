@@ -4,6 +4,8 @@ function Names() {
     const [names, setNames] = useState([]);
     const [totalAmount, setTotalAmount] = useState();
     const [sort, setSort] = useState(false);
+    const [search, setSearch] = useState("");
+    const [filteredNames, setFilteredNames] = useState([]);
 
     useEffect(() => {
         const getNames = async () => {
@@ -21,6 +23,15 @@ function Names() {
         getNames();
     }, []);
 
+    useEffect(() => {
+        // Search/filter names
+        setFilteredNames(
+            names.filter((n) => {
+                return n.name.toLowerCase().includes(search.toLowerCase());
+            })
+        );
+    }, [search, names]);
+
     // Fetch names from API
     const fetchNames = async () => {
         const res = await fetch("/api/names");
@@ -29,7 +40,7 @@ function Names() {
     };
 
     // Sort by popularity
-    const sortByPopularity = names.sort(
+    const sortByPopularity = filteredNames.sort(
         (a, b) => Number(b.amount) - Number(a.amount)
     );
 
@@ -41,7 +52,7 @@ function Names() {
     ));
 
     // Sort in alphabetical order
-    const sortByAlphabet = names.sort((a, b) =>
+    const sortByAlphabet = filteredNames.sort((a, b) =>
         a.name > b.name ? 1 : b.name > a.name ? -1 : 0
     );
 
@@ -60,6 +71,11 @@ function Names() {
     return (
         <div className="name-list">
             <h2>Popular Names</h2>
+            <input
+                type="text"
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+            />
             <button className="btn" onClick={handleSort}>
                 {sort ? "Sort By Popularity" : "Sort by Alphabet"}
             </button>
