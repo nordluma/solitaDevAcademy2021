@@ -2,13 +2,20 @@ import { useState, useEffect } from "react";
 
 function Names() {
     const [names, setNames] = useState([]);
+    const [totalAmount, setTotalAmount] = useState();
     const [sort, setSort] = useState(false);
 
     useEffect(() => {
         const getNames = async () => {
             const namesFromServer = await fetchNames();
-
             setNames(namesFromServer.names);
+            getTotalAmount(namesFromServer.names);
+        };
+
+        // Total amount of all the names
+        const getTotalAmount = async (names) => {
+            const sumOfNames = names.reduce((a, b) => a + b.amount, 0);
+            setTotalAmount(sumOfNames);
         };
 
         getNames();
@@ -50,23 +57,17 @@ function Names() {
         !sort ? setSort(true) : setSort(false);
     };
 
-    // Total amount of all the names
-
     return (
         <div className="name-list">
             <h2>Popular Names</h2>
             <button className="btn" onClick={handleSort}>
                 {sort ? "Sort By Popularity" : "Sort by Alphabet"}
             </button>
-
             {sort ? sortedByAlphabet : sortedByPopularity}
-
-            {/* {names.map((name, index) => (
-                <div className="name" key={index}>
-                    <p>{name.name}</p>
-                    <p>{name.amount}</p>
-                </div>
-            ))} */}
+            <div className="name">
+                <h4>Total Amount of Names: </h4>
+                <h4>{totalAmount}</h4>
+            </div>
         </div>
     );
 }
